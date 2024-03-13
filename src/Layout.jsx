@@ -1,6 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
 
 export default function Layout({token,onLogout}){
+    // INI CONTOH PERUBAHAN //
     return(
         <>
         <div className="flex justify-around gap-2 bg-blue-200 h-[70px] py-4 text-align text-2xl ">
