@@ -1,38 +1,159 @@
-import axios from "axios"
-import { http } from "./http"
+import axios from "axios";
+import { http } from "./http";
 
-export const Logins = async (email,password) => {
-    const data = {
-        email:email,
-        password:password
-    }
-    const api = await axios.post((http + "auth/login"),data)
-    .then ((response) => {
-        return response
+export const handleLogin = async (email, password) => {
+  const apiLogin = await axios
+    .post(http + "auth/login", {
+      email: email,
+      password: password,
     })
-    .catch((eror) => {
-        return eror.response
+    .then((response) => {
+      return response;
     })
-    return api
-}
+    .catch((err) => {
+      return err.response;
+    });
+  return apiLogin;
+};
 
 export const setTokens = (token) => {
-    localStorage.setItem('token',token);
-}
+  localStorage.setItem("token", token);
+};
 
 export const getToken = () => {
-    return localStorage.getItem('token') ?? null;
+  return localStorage.getItem("token") ?? null;
+};
+
+export const tampilkan = async () => {
+  const token = getToken();
+  const notes = await axios
+    .get(http + "notes", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((eror) => {
+      return eror.response;
+    });
+  return notes;
+};
+
+export const addNote = async (title, content) => {
+  const token = getToken();
+  const noteBaru = {
+    title: title,
+    content: content,
+    writer: 1,
+  };
+  const add = await axios
+    .post(http + "notes", noteBaru, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((eror) => {
+      return eror.response;
+    });
+  return add;
+};
+
+export const deleteNote = async (id) => {
+  const token = getToken();
+  const deletes = await axios
+    .delete(http + "notes/" + id, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((eror) => {
+      return eror.response;
+    });
+  return deletes;
+};
+
+export const editNote = async (id, title, content, writer) => {
+  const token = getToken();
+  const edits = await axios
+    .put(
+      http + "notes/" + id,
+      { title, content, writer },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((eror) => {
+      return eror.response
+    });
+  return edits;
+};
+
+export const Register = async (name,email,password) => {
+    const regis = axios.post((http + "auth/register"),{
+        name:name,
+        email:email,
+        password:password
+    })
+    .then((response) => {
+        return response
+    })
+    .catch((error) => {
+        return error.response
+    })
+    return regis
 }
 
-export const addNote = async (title,content,writer) => {
-    const token = getToken();
-    const apiAdd = await axios.post((http+ "notes"),{
-        title:title,
-        content:content,
-        writer:writer
-    },{
-    headers:{
-        Authorization:"Bearear"
-        }
-    })
-}
+
+
+
+// import axios from "axios"
+// import { http } from "./http"
+
+// export const handleLogin = async (email,password) => {
+//     const data = {
+//         email:email,
+//         password:password
+//     }
+//     const api = await axios.post((http + "auth/login"),data)
+//     .then ((response) => {
+//         return response
+//     })
+//     .catch((eror) => {
+//         return eror.response
+//     })
+//     return api
+// }
+
+// export const setTokens = (token) => {
+//     localStorage.setItem('token',token);
+// }
+
+// export const getToken = () => {
+//     return localStorage.getItem('token') ?? null;
+// }
+
+// export const addNote = async (title,content,writer) => {
+//     const token = getToken();
+//     const apiAdd = await axios.post((http+ "notes"),{
+//         title:title,
+//         content:content,
+//         writer:writer
+//     },{
+//     headers:{
+//         Authorization:"Bearear"
+//         }
+//     })
+// }
