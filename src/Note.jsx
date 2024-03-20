@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid';
 import FormTambah from '../FormTambah';
 import FormEdit from './FormEdit';
 import axios from 'axios';
+import { addNote, deleteNote, editNote, tampilkan } from './api';
 // import { useState } from 'react'
 
 function Note() {
@@ -18,7 +19,7 @@ function Note() {
 // console.log(currentNoteId)
   const handleFetchData = async () => {
     const apiFetch = await tampilkan();
-    setNotes(apiFetch.data.data ?? null)
+    setNotes(apiFetch.data.data.notes ?? null)
   }
 
   const handleAddData = async (title,content) => {
@@ -117,7 +118,7 @@ useEffect(() => {
   return (
     <>
       <div className="App bg-blue-100 ">
-        <h1 onClick={() => setCount((count) => count + 5)} className='text-center text-5xl p-5'>Notes {count}</h1>
+        <h1 className='text-center text-5xl p-5'>Notes</h1>
           {currentNoteId ? 
           < FormEdit onEdit={handleUpdate} targetValue={notes !== null ? notes.filter(e => e.id === currentNoteId)[0] : null} notes={notes} oncancel={cancelEdit} />
           : <FormTambah onAdd={handleAddData} oncancel={cancelEdit}/>}
